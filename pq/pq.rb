@@ -8,7 +8,7 @@ class PriorityQueue
     insert_heapify
   end
 
-  def maximini
+  def top
     return nil if @heap.empty?
     @heap.first[:val]
   end

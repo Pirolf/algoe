@@ -7,7 +7,7 @@ RSpec.describe PriorityQueue do
   
   context 'when queue is empty' do
     it 'top of queue is nil' do
-      expect(@pq.maximini).to be_nil
+      expect(@pq.top).to be_nil
     end
     
     it 'extract returns nil' do
@@ -22,7 +22,7 @@ RSpec.describe PriorityQueue do
 
     context 'when there is 1 item' do
       it 'top of the queue is the item' do
-        expect(@pq.maximini).to be(1)
+        expect(@pq.top).to be(1)
       end
 
       it 'extract returns the item' do
@@ -52,7 +52,7 @@ RSpec.describe PriorityQueue do
     context 'when heap is full' do 
       before(:each) do
         @pq.insert(2, 0)
-        expect(@pq.maximini).to be(1)
+        expect(@pq.top).to be(1)
       end
 
       context 'new item has medium key' do
