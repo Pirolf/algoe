@@ -9,7 +9,7 @@ class PriorityQueue
 
   def insert(x, k)
     @heap.push({val: x, key: k})
-    insert_heapify
+    heapify_up
   end
 
   def top
@@ -17,14 +17,15 @@ class PriorityQueue
     @heap.first[:val]
   end
 
-  def changeKey(i, k)
-    setKey(k)
-    heapify
+  def set_key(i, k)
+    @heap[i][:key] = k 
+    heapify_up(i)
+    heapify_down(i)
   end
 
   def extract
     top = @heap.shift
-    if !@heap.empty? then heapify end
+    if !@heap.empty? then heapify_down end
     return top if top.nil? 
     return top[:val]
   end
@@ -34,9 +35,7 @@ class PriorityQueue
   end
 
   private
-    def insert_heapify
-      i = @heap.length - 1
-
+    def heapify_up(i = @heap.length - 1)
       while i >= 0
         parentIndex = parent(i)
         if parentIndex < 0 || in_order(parentIndex, i)
@@ -47,7 +46,7 @@ class PriorityQueue
       end
     end
 
-    def heapify(i = 0)
+    def heapify_down(i = 0)
       left = left(i)
       right = right(i)
 
@@ -57,11 +56,11 @@ class PriorityQueue
 
       if in_order(left, right)
         exchange(i, left)
-        return heapify(left)
+        return heapify_down(left)
       end
 
       exchange(i, right)
-      return heapify(right)
+      return heapify_down(right)
     end
 
     def key(i)
@@ -94,9 +93,5 @@ class PriorityQueue
       temp = @heap[j]
       @heap[j] = @heap[i]
       @heap[i] = temp
-    end
-
-    def setKey(i, k)
-      @heap[i][:key] = k
     end
 end
