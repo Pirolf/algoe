@@ -1,8 +1,10 @@
 class PriorityQueue
   attr_reader :heap
+  attr_reader :order
 
-  def initialize
+  def initialize(order = :max)
     @heap = []
+    @order = order
   end
 
   def insert(x, k)
@@ -37,8 +39,9 @@ class PriorityQueue
 
       while i >= 0
         parentIndex = parent(i)
-        break if parentIndex < 0
-        break if key(parentIndex) >= key(i)
+        if parentIndex < 0 || in_order(parentIndex, i)
+          return
+        end
         exchange(parentIndex, i)
         i = parentIndex
       end
@@ -47,23 +50,12 @@ class PriorityQueue
     def heapify(i = 0)
       left = left(i)
       right = right(i)
-      if left > @heap.length - 1
+
+      if in_order(i, left) && in_order(i, right)
         return
       end
 
-      if right > @heap.length - 1
-        if key(i) > key(left)
-          return
-        end
-        exchange(i, left)
-        return heapify(left)
-      end
-
-      if key(i) > key(left) && key(i) > key(right)
-        return
-      end
-
-      if key(left) > key(right)
+      if in_order(left, right)
         exchange(i, left)
         return heapify(left)
       end
@@ -73,7 +65,17 @@ class PriorityQueue
     end
 
     def key(i)
+      if @heap[i].nil?
+        return @order == :max ? -Float::INFINITY : Float::INFINITY 
+      end
       @heap[i][:key]
+    end
+
+    def in_order(i, j)
+      if @order == :max
+        return key(i) > key(j)
+      end
+      key(i) < key(j)
     end
 
     def parent(i)
