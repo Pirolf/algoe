@@ -1,4 +1,6 @@
 class PriorityQueue
+  attr_reader :heap
+
   def initialize
     @heap = []
   end
