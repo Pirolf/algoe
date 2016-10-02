@@ -13,6 +13,10 @@ RSpec.describe PriorityQueue do
     it 'extract returns nil' do
       expect(@pq.extract).to be_nil
     end
+
+    it 'delete returns nil' do
+      expect(@pq.extract).to be_nil
+    end
   end
 
   context 'when it is a max heap' do
@@ -24,6 +28,11 @@ RSpec.describe PriorityQueue do
       context 'when there is 1 item' do
         it 'top of the queue is the item' do
           expect(@pq.top).to be(1)
+        end
+
+        it 'delete' do
+          expect(@pq.delete(0)).to be(1)
+          expect(@pq.extract).to be_nil
         end
 
         it 'extract returns the item' do
@@ -49,6 +58,42 @@ RSpec.describe PriorityQueue do
         before(:each) do
           @pq.insert(2, 0)
           expect(@pq.top).to be(1)
+        end
+
+        context 'delete' do
+          before(:each) do
+            @pq.insert(3, -2)
+            @pq.insert(4, -4)
+            @pq.insert(5, -6)
+            expect(@pq.heap).to eq([
+              {key: 2, val: 1},
+              {key: 0, val: 2},
+              {key: -2, val: 3},
+              {key: -4, val: 4},
+              {key: -6, val: 5}
+            ])
+          end
+
+          context 'root' do
+            it 'sorts' do
+              expect(@pq.delete(0)).to be(1)
+              extract_all [2, 3, 4, 5]
+            end
+          end
+
+          context 'non root or leaf' do
+            it 'sorts' do
+              expect(@pq.delete(1)).to be(2)
+              extract_all [1, 3, 4, 5]
+            end
+          end
+
+          context 'leaf' do
+            it 'sorts' do
+              expect(@pq.delete(3)).to be(4)
+              extract_all [1, 2, 3, 5]
+            end
+          end
         end
 
         context 'set key' do

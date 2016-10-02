@@ -30,6 +30,21 @@ class PriorityQueue
     return top[:val]
   end
 
+  def delete(i)
+    return nil if @heap.empty?
+
+    item = @heap[i][:val]
+    if @heap.length == 1
+      @heap.pop
+      return item
+    end
+
+    @heap[i] = @heap.pop
+    heapify_up(i)
+    heapify_down(i)
+    return item
+  end
+
   def clear
     @heap.clear
   end
