@@ -10,13 +10,46 @@ RSpec.describe 'Young Tableau' do
   end
 
   describe '#extract_min' do
+    context 'when grid is 1x1' do
+      it 'returns the number' do
+        @yt = [[1]]
+        expect(extract_min @yt).to be(1)
+        expect(@yt).to eq [[Float::INFINITY]]
+      end
+
+      it 'returns infinity' do
+        @yt = [[Float::INFINITY]]
+        expect(extract_min @yt).to be Float::INFINITY
+        expect(@yt).to eq [[Float::INFINITY]]
+      end
+    end
+
     it 'returns the smallest element and maintains table' do
       expect(extract_min @yt).to be(1)
-      expect(@yt).to eq([
+      expect(@yt).to eq [
         [2, 3, 4, 5],
         [3, 6, 8, 9],
-        [4, 7, 8, :empty]
-      ])
+        [4, 7, 8, Float::INFINITY]
+      ]
+    end
+
+    context 'when grid is not full' do
+      before(:each) do
+        @yt = [
+          [1, 4, 5],
+          [3, Float::INFINITY, Float::INFINITY],
+          [4, Float::INFINITY, Float::INFINITY]
+        ]
+      end
+
+      it 'returns the smallest element and maintains table' do
+        expect(extract_min @yt).to be(1)
+        expect(@yt).to eq [
+          [3, 4, 5],
+          [4, Float::INFINITY, Float::INFINITY],
+          [Float::INFINITY, Float::INFINITY, Float::INFINITY]
+        ]
+      end
     end
   end
 
@@ -25,7 +58,7 @@ RSpec.describe 'Young Tableau' do
       @yt = [
         [1, 2, 4, 8],
         [5, 6, 6, 9],
-        [4, 7, :empty, :empty]
+        [4, 7, Float::INFINITY, Float::INFINITY]
       ]
     end
 
@@ -34,8 +67,8 @@ RSpec.describe 'Young Tableau' do
         insert(@yt, 5)
         expect(@yt).to eq([
           [1, 2, 4, 5, 8],
-          [5, 6, 6, 9, :empty],
-          [4, 7, :empty, :empty, :empty]
+          [5, 6, 6, 9, Float::INFINITY],
+          [4, 7, Float::INFINITY, Float::INFINITY, Float::INFINITY]
         ])
       end
     end
