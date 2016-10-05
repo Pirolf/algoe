@@ -9,7 +9,7 @@ RSpec.describe 'Young Tableau' do
     ]
   end
 
-  fdescribe '#extract_min' do
+  describe '#extract_min' do
     context 'when grid is 1x1' do
       it 'returns the number' do
         @yt = [[1]]
@@ -67,7 +67,7 @@ RSpec.describe 'Young Tableau' do
     end
   end
 
-  fdescribe '#insert into a non full table' do
+  describe '#insert into a non full table' do
     before(:each) do
       @yt = [
         [1, 2, 4, 8],
@@ -124,36 +124,36 @@ RSpec.describe 'Young Tableau' do
     end
   end
 
-  describe '#sort' do
-    before(:each) do
-      @arr = [7,4,5,4,2,9,6,1,6]
-      # @yt = [
-      #   [1, 2, 4],
-      #   [5, 6, 6],
-      #   [4, 7, 9]
-      # ]
-    end
-
-    it 'sorts' do
-      expect(sort @arr).to eq([1,2,4,4,5,6,6,7,9])
-    end
-  end
-
   describe '#has' do
     before(:each) do
       @yt = [
-        [1, 2, 4],
-        [5, 6, 6],
-        [4, 7, 9]
+        [1, 2, 4, 4],
+        [3, 6, 8, Float::INFINITY],
+        [4, 7, 9, Float::INFINITY],
+        [5, Float::INFINITY, Float::INFINITY, Float::INFINITY]
       ]
     end
 
     it 'returns true when it has the number' do
+      expect(has(@yt, 1)).to be true
+      expect(has(@yt, 2)).to be true
+      expect(has(@yt, 4)).to be true
+      expect(has(@yt, 3)).to be true
       expect(has(@yt, 5)).to be true
+      expect(has(@yt, 6)).to be true
+      expect(has(@yt, 8)).to be true
+      expect(has(@yt, 7)).to be true
+      expect(has(@yt, 9)).to be true
     end
 
     it 'returns false when it does not have the number' do
-      expect(has(@yt, 8)).to be false
+      expect(has(@yt, 0)).to be false
+      expect(has(@yt, 2.5)).to be false
+      expect(has(@yt, 4.5)).to be false
+      expect(has(@yt, 1.5)).to be false
+      expect(has(@yt, 3.5)).to be false
+      expect(has(@yt, 7.5)).to be false
+      expect(has(@yt, 10)).to be false
     end
   end
 end

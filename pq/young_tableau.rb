@@ -18,10 +18,56 @@ def up(yt, r, c)
   yt[r-1][c]
 end
 
+def bottom_right(yt, r, c)
+  return nil if r >= yt.length - 1 || c >= yt[0].length-1
+  yt[r+1][c+1]
+end
+
+
 def exchange(yt, r1, c1, r2, c2)
   temp = yt[r2][c2]
   yt[r2][c2] = yt[r1][c1]
   yt[r1][c1] = temp
+end
+
+def binary_search(a, x, i_start = 0, i_end = a.length)
+  return false if i_end - i_start <= 0
+
+  middle = (i_start + i_end)/2
+  val = a[middle]
+  return true if val == x
+
+  if x > val
+    return binary_search(a, x, middle+1, i_end)
+  end
+  return binary_search(a, x, i_start, middle)
+end
+
+def has(yt, x)
+  r = 0
+  c = 0
+
+  return false if yt.empty?
+  can_search = false
+  while r < yt.length && c < yt[0].length
+    return true if yt[r][c] == x
+    max = bottom_right(yt, r, c)
+    if !max.nil? && max <= x
+      r += 1
+      c += 1
+    else
+      can_search = true
+      break
+    end
+  end
+
+  return false if !can_search
+  row = yt[r]
+  in_right = binary_search(row, x, c)
+  return true if in_right
+
+  col = (0..yt.length-1).map {|n| yt[n][c]}
+  return binary_search(col, x, r+1)
 end
 
 def insert(yt, x)
