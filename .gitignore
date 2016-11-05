@@ -1,3 +1,6 @@
 tags
 bin/*
 *.swp
+build/*
+node_modules/*
+*.log

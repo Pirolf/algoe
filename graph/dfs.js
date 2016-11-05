@@ -1,14 +1,12 @@
-var white = 0;
-var grey = 1;
-var black = 2;
+const white = 0;
+const grey = 1;
+const black = 2;
 
 function dfs(graph, vertices) {
-  var verticesInfo = vertices.map(function(v) {
-    return {color: white};
-  });
+  const verticesInfo = vertices.map(v => ({color: white}));
 
-  var time = {v: 0};
-  vertices.forEach(function(v) {
+  let time = {v: 0};
+  vertices.forEach(v => {
     if (verticesInfo[v].color === white) dfsVisit(graph, verticesInfo, v, time);
   });
 }
@@ -19,9 +17,9 @@ function dfsVisit(graph, verticesInfo, v, time) {
   verticesInfo[v].discover = time.v;
   console.log('discovered ', v, ' at ', time.v);
 
-  graph[v].forEach(function(c) {
+  graph[v].forEach(c => {
     if (verticesInfo[c].color === white) {
-      newTime = dfsVisit(graph, verticesInfo, c, time);
+      dfsVisit(graph, verticesInfo, c, time);
     }
   });
 
@@ -31,8 +29,8 @@ function dfsVisit(graph, verticesInfo, v, time) {
   console.log('finished ', v, ' at ', time.v);
 }
 
-var vertices = [0, 1, 2, 3, 4, 5];
-var graph = [
+const vertices = [0, 1, 2, 3, 4, 5];
+const graph = [
   [1, 2],
   [3],
   [1, 3],
@@ -41,3 +39,5 @@ var graph = [
   [4]
 ];
 dfs(graph, vertices);
+
+module.exports = dfs;
